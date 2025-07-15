@@ -11,20 +11,19 @@
     <header class="header">
         <div class="logo">Pet-Sense</div>
         <nav class="nav">
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">Laporan</a>
-            <a href="#">Adopsi</a>
-            <a href="#">Relawan</a>
-            <a href="#">Tentang</a>
+            <a href="" class="active">Dashboard</a>
+            <a href="laporan.html">Laporan</a>
         </nav>
         <div class="header-actions">
-            <button class="report-btn">Laporkan</button>
+            <a href="laporkan.html">
+                <button class="report-btn">Laporkan</button>
+            </a>
             <div class="user-avatar">👤</div>
         </div>
     </header>
 
     <main class="main-content">
-        <h1 class="page-title">Monitoring Kucing Liar</h1>
+        <h1 class="page-title">Dashboard</h1>
         <p class="page-subtitle">Pantau dan analisis kucing liar di daerah Anda</p>
 
         <div class="controls">
@@ -115,19 +114,15 @@
                     <h3 class="card-title">Distribusi Umur Kucing</h3>
                     <div class="chart-container">
                         <div class="donut-chart">
-                            <svg viewBox="0 0 42 42">
-                                <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#f59e0b" stroke-width="3" stroke-dasharray="45 55" stroke-dashoffset="25"></circle>
-                                <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fb923c" stroke-width="3" stroke-dasharray="35 65" stroke-dashoffset="70"></circle>
-                                <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fbbf24" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="95"></circle>
-                            </svg>
+                            <canvas id="donutChart" width="140" height="140"></canvas>
                         </div>
                         <div class="donut-legend">
                             <div class="legend-item">
-                                <div class="legend-dot" style="background: #f59e0b;"></div>
+                                <div class="legend-dot" style="background: #ffa200;"></div>
                                 <span>Anak Kucing</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-dot" style="background: #fb923c;"></div>
+                                <div class="legend-dot" style="background: #ffc28f;"></div>
                                 <span>Dewasa</span>
                             </div>
                             <div class="legend-item">
@@ -156,6 +151,7 @@
             </div>
         </div>
     </main>
+    <script src="js/scripts.js"></script>
 
 </body>
 </html>

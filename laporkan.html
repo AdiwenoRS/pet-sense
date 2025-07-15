@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet-Sense - Laporan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 12px 24px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .logo::before {
+            content: '🐾';
+            font-size: 20px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: #2c3e50;
+        }
+
+        .nav a.active {
+            color: #2c3e50;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .report-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .report-btn:hover {
+            background: #059669;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .report-form {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.2s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .form-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 48px 24px;
+            text-align: center;
+            background: #f9fafb;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #9ca3af;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .uploaded-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .datetime-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .map-widget {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            background: #e8f5e8;
+            position: relative;
+            cursor: crosshair;
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .map-marker::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
+            backdrop-filter: blur(4px);
+        }
+
+        .location-info {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .quantity-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .quantity-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .quantity-btn {
+            flex: 1;
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 32px;
+        }
+
+        .submit-btn:hover {
+            background: #059669;
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #a7f3d0;
+            display: none;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+            }
+            
+            .report-form {
+                padding: 24px;
+            }
+            
+            .datetime-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Pet-Sense</div>
+        <nav class="nav">
+            <a href="index.html">Dashboard</a>
+            <a href="laporan.html">Laporan</a>
+        </nav>
+        <div class="header-actions">
+            <button class="report-btn">Laporkan</button>
+            <div class="user-avatar">👤</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">Buat Laporan Baru</h1>
+        <p class="page-subtitle">Laporkan keberadaan kucing liar di sekitar Anda</p>
+
+        <div class="success-message" id="successMessage">
+            ✅ Laporan berhasil dikirim! Terima kasih atas kontribusi Anda.
+        </div>
+
+        <div class="report-form">
+            <div class="form-group">
+                <label class="form-label">📸 Upload Foto Kucing</label>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Klik untuk upload atau drag & drop gambar</div>
+                    <div class="upload-subtext">JPG, PNG, atau GIF (maksimal 5MB)</div>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleFileSelect(event)">
+                    <img id="previewImage" class="uploaded-image" style="display: none;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">📅 Tanggal & Waktu</label>
+                <div class="datetime-group">
+                    <input type="date" class="form-input" id="dateInput" required>
+                    <input type="time" class="form-input" id="timeInput" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">📍 Lokasi</label>
+                <div class="map-widget" onclick="setMarker(event)" id="mapWidget">
+                    <div class="map-overlay">Klik pada peta untuk menandai lokasi</div>
+                </div>
+                <div class="location-info" id="locationInfo" style="display: none;">
+                    <strong>Koordinat:</strong> <span id="coordinates">-</span><br>
+                    <strong>Alamat:</strong> <span id="address">Menunggu pemilihan lokasi...</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">🔢 Jumlah Kucing</label>
+                <input type="number" class="quantity-input" id="quantityInput" value="1" min="1" max="50" onchange="updateQuantity(this.value)">
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decreaseQuantity()">− Kurangi</button>
+                    <button class="quantity-btn" onclick="increaseQuantity()">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">📝 Deskripsi Tambahan</label>
+                <textarea 
+                    class="form-textarea" 
+                    id="descriptionInput" 
+                    placeholder="Deskripsikan kondisi kucing, perilaku, atau informasi tambahan lainnya yang dapat membantu proses penanganan... (Contoh: kucing terlihat sehat, suka bermain, takut dengan manusia, dll.)"
+                    maxlength="500"
+                    oninput="updateCharCounter()"
+                ></textarea>
+                <div class="char-counter" id="charCounter">0/500 karakter</div>
+            </div>
+
+            <button class="submit-btn" onclick="submitReport()">📝 Kirim Laporan</button>
+        </div>
+    </main>
+
+    <script>
+        // Set current date and time
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+        const currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
+        
+        document.getElementById('dateInput').value = today;
+        document.getElementById('timeInput').value = currentTime;
+
+        // Character counter for description
+        function updateCharCounter() {
+            const textarea = document.getElementById('descriptionInput');
+            const counter = document.getElementById('charCounter');
+            const currentLength = textarea.value.length;
+            const maxLength = 500;
+            
+            counter.textContent = `${currentLength}/${maxLength} karakter`;
+            
+            if (currentLength > maxLength * 0.9) {
+                counter.style.color = '#ef4444';
+            } else if (currentLength > maxLength * 0.7) {
+                counter.style.color = '#f59e0b';
+            } else {
+                counter.style.color = '#9ca3af';
+            }
+        }
+
+        // File upload handling
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('previewImage');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    
+                    // Update upload area
+                    const uploadArea = document.querySelector('.upload-area');
+                    uploadArea.style.padding = '24px';
+                    uploadArea.querySelector('.upload-icon').style.display = 'none';
+                    uploadArea.querySelector('.upload-text').textContent = 'Foto berhasil diupload';
+                    uploadArea.querySelector('.upload-subtext').textContent = 'Klik untuk mengganti foto';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            document.querySelector('.upload-area').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            document.querySelector('.upload-area').classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            document.querySelector('.upload-area').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('fileInput').files = files;
+                handleFileSelect({ target: { files: files } });
+            }
+        }
+
+        // Map marker handling
+        let markerPosition = null;
+
+        function setMarker(event) {
+            const mapWidget = document.getElementById('mapWidget');
+            const rect = mapWidget.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Remove existing marker
+            const existingMarker = mapWidget.querySelector('.map-marker');
+            if (existingMarker) {
+                existingMarker.remove();
+            }
+            
+            // Create new marker
+            const marker = document.createElement('div');
+            marker.className = 'map-marker';
+            marker.style.left = x + 'px';
+            marker.style.top = y + 'px';
+            mapWidget.appendChild(marker);
+            
+            // Convert to coordinates (mock calculation)
+            const lat = -6.2 + (y / 300) * 0.1;
+            const lng = 106.8 + (x / 300) * 0.1;
+            
+            markerPosition = { lat, lng };
+            
+            // Update location info
+            document.getElementById('locationInfo').style.display = 'block';
+            document.getElementById('coordinates').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            document.getElementById('address').textContent = 'Jakarta, Indonesia (koordinat perkiraan)';
+        }
+
+        // Quantity controls
+        function updateQuantity(value) {
+            const input = document.getElementById('quantityInput');
+            input.value = Math.max(1, Math.min(50, parseInt(value) || 1));
+        }
+
+        function increaseQuantity() {
+            const input = document.getElementById('quantityInput');
+            const currentValue = parseInt(input.value) || 1;
+            input.value = Math.min(50, currentValue + 1);
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantityInput');
+            const currentValue = parseInt(input.value) || 1;
+            input.value = Math.max(1, currentValue - 1);
+        }
+
+        // Form submission
+        function submitReport() {
+            const fileInput = document.getElementById('fileInput');
+            const dateInput = document.getElementById('dateInput');
+            const timeInput = document.getElementById('timeInput');
+            const quantityInput = document.getElementById('quantityInput');
+            const descriptionInput = document.getElementById('descriptionInput');
+            
+            // Validation
+            if (!fileInput.files.length) {
+                alert('Silakan upload foto kucing terlebih dahulu');
+                return;
+            }
+            
+            if (!dateInput.value || !timeInput.value) {
+                alert('Silakan isi tanggal dan waktu');
+                return;
+            }
+            
+            if (!markerPosition) {
+                alert('Silakan pilih lokasi pada peta');
+                return;
+            }
+            
+            if (!quantityInput.value || quantityInput.value < 1) {
+                alert('Silakan masukkan jumlah kucing yang valid');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Mengirim laporan...';
+            
+            // Log form data (for demonstration)
+            console.log('Form Data:', {
+                photo: fileInput.files[0]?.name || 'No file',
+                date: dateInput.value,
+                time: timeInput.value,
+                location: markerPosition,
+                quantity: quantityInput.value,
+                description: descriptionInput.value
+            });
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📝 Kirim Laporan';
+                
+                // Reset form
+                resetForm();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            }, 2000);
+        }
+
+        function resetForm() {
+            // Reset file input
+            document.getElementById('fileInput').value = '';
+            document.getElementById('previewImage').style.display = 'none';
+            
+            // Reset upload area
+            const uploadArea = document.querySelector('.upload-area');
+            uploadArea.style.padding = '48px 24px';
+            uploadArea.querySelector('.upload-icon').style.display = 'block';
+            uploadArea.querySelector('.upload-text').textContent = 'Klik untuk upload atau drag & drop gambar';
+            uploadArea.querySelector('.upload-subtext').textContent = 'JPG, PNG, atau GIF (maksimal 5MB)';
+            
+            // Reset date and time to current
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
+            document.getElementById('dateInput').value = today;
+            document.getElementById('timeInput').value = currentTime;
+            
+            // Reset map marker
+            const existingMarker = document.querySelector('.map-marker');
+            if (existingMarker) {
+                existingMarker.remove();
+            }
+            markerPosition = null;
+            document.getElementById('locationInfo').style.display = 'none';
+            
+            // Reset quantity
+            document.getElementById('quantityInput').value = '1';
+            
+            // Reset description
+            document.getElementById('descriptionInput').value = '';
+            updateCharCounter();
+        }
+    </script>
+</body>
+</html>

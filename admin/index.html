@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet-Sense - Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 12px 24px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .logo::before {
+            content: '🐾';
+            font-size: 20px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: #2c3e50;
+        }
+
+        .nav a.active {
+            color: #2c3e50;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .report-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .report-btn:hover {
+            background: #059669;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .admin-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 16px;
+        }
+
+        .submit-btn:hover {
+            background: #059669;
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .data-table td {
+            border: 1px solid #e9ecef;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-stray {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-adopted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-sterilized {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-non-sterilized {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-kitten {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        .status-adult {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .status-old {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .status-healthy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-skinny {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-medical {
+            background: #fed7aa;
+            color: #ea580c;
+        }
+
+        .status-critical {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .edit-btn:hover {
+            background: #2563eb;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #a7f3d0;
+            display: none;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+            }
+            
+            .admin-section {
+                padding: 24px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Pet-Sense</div>
+        <nav class="nav">
+            <a href="#">Dashboard</a>
+            <a href="#">Laporan</a>
+            <a href="#" class="active">Admin</a>
+        </nav>
+        <div class="header-actions">
+            <div class="user-avatar">👤</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">Admin Dashboard</h1>
+        <p class="page-subtitle">Kelola data kucing dan status adopsi</p>
+
+        <div class="success-message" id="successMessage">
+            ✅ Data kucing berhasil ditambahkan!
+        </div>
+
+        <!-- Add Cat Form -->
+        <div class="admin-section">
+            <h2 class="section-title">🐱 Tambah Data Kucing</h2>
+            
+            <form id="catForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Status Kucing</label>
+                        <select class="form-select" id="catStatus" required>
+                            <option value="">Pilih Status</option>
+                            <option value="stray">Kucing Liar</option>
+                            <option value="adopted">Diadopsi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status Sterilisasi</label>
+                        <select class="form-select" id="sterilizedStatus" required>
+                            <option value="">Pilih Status</option>
+                            <option value="sterilized">Sudah Steril</option>
+                            <option value="non-sterilized">Belum Steril</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Usia Kucing</label>
+                        <select class="form-select" id="catAge" required>
+                            <option value="">Pilih Usia</option>
+                            <option value="kitten">Anak Kucing</option>
+                            <option value="adult">Dewasa</option>
+                            <option value="old">Tua</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Kondisi Kesehatan</label>
+                        <select class="form-select" id="catHealth" required>
+                            <option value="">Pilih Kondisi</option>
+                            <option value="healthy">Sehat</option>
+                            <option value="skinny">Kurus</option>
+                            <option value="medical">Perlu Perawatan Medis</option>
+                            <option value="critical">Kritis</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">➕ Tambah Data Kucing</button>
+            </form>
+        </div>
+
+        <!-- Cat Data Table -->
+        <div class="admin-section">
+            <h2 class="section-title">📊 Data Kucing</h2>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status Kucing</th>
+                            <th>Status Sterilisasi</th>
+                            <th>Usia</th>
+                            <th>Kondisi Kesehatan</th>
+                            <th>Tanggal Ditambahkan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="catTableBody">
+                        <tr>
+                            <td>001</td>
+                            <td><span class="status-badge status-stray">Kucing Liar</span></td>
+                            <td><span class="status-badge status-non-sterilized">Belum Steril</span></td>
+                            <td><span class="status-badge status-kitten">Anak Kucing</span></td>
+                            <td><span class="status-badge status-healthy">Sehat</span></td>
+                            <td>2025-01-15</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="edit-btn" onclick="editCat(1)">✏️ Edit</button>
+                                    <button class="delete-btn" onclick="deleteCat(1)">🗑️ Hapus</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td><span class="status-badge status-adopted">Diadopsi</span></td>
+                            <td><span class="status-badge status-sterilized">Sudah Steril</span></td>
+                            <td><span class="status-badge status-adult">Dewasa</span></td>
+                            <td><span class="status-badge status-skinny">Kurus</span></td>
+                            <td>2025-01-14</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="edit-btn" onclick="editCat(2)">✏️ Edit</button>
+                                    <button class="delete-btn" onclick="deleteCat(2)">🗑️ Hapus</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td><span class="status-badge status-stray">Kucing Liar</span></td>
+                            <td><span class="status-badge status-non-sterilized">Belum Steril</span></td>
+                            <td><span class="status-badge status-old">Tua</span></td>
+                            <td><span class="status-badge status-medical">Perlu Perawatan Medis</span></td>
+                            <td>2025-01-13</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="edit-btn" onclick="editCat(3)">✏️ Edit</button>
+                                    <button class="delete-btn" onclick="deleteCat(3)">🗑️ Hapus</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td><span class="status-badge status-adopted">Diadopsi</span></td>
+                            <td><span class="status-badge status-sterilized">Sudah Steril</span></td>
+                            <td><span class="status-badge status-adult">Dewasa</span></td>
+                            <td><span class="status-badge status-healthy">Sehat</span></td>
+                            <td>2025-01-12</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="edit-btn" onclick="editCat(4)">✏️ Edit</button>
+                                    <button class="delete-btn" onclick="deleteCat(4)">🗑️ Hapus</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>005</td>
+                            <td><span class="status-badge status-stray">Kucing Liar</span></td>
+                            <td><span class="status-badge status-non-sterilized">Belum Steril</span></td>
+                            <td><span class="status-badge status-kitten">Anak Kucing</span></td>
+                            <td><span class="status-badge status-critical">Kritis</span></td>
+                            <td>2025-01-11</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="edit-btn" onclick="editCat(5)">✏️ Edit</button>
+                                    <button class="delete-btn" onclick="deleteCat(5)">🗑️ Hapus</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let catIdCounter = 6;
+
+        // Form submission
+        document.getElementById('catForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const catStatus = document.getElementById('catStatus').value;
+            const sterilizedStatus = document.getElementById('sterilizedStatus').value;
+            const catAge = document.getElementById('catAge').value;
+            const catHealth = document.getElementById('catHealth').value;
+            
+            // Validation
+            if (!catStatus || !sterilizedStatus || !catAge || !catHealth) {
+                alert('Silakan lengkapi semua field');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Menambahkan data...';
+            
+            setTimeout(() => {
+                // Add new row to table
+                addCatToTable(catStatus, sterilizedStatus, catAge, catHealth);
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Reset form
+                document.getElementById('catForm').reset();
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.textContent = '➕ Tambah Data Kucing';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 3000);
+            }, 1000);
+        });
+
+        function addCatToTable(catStatus, sterilizedStatus, catAge, catHealth) {
+            const tableBody = document.getElementById('catTableBody');
+            const row = document.createElement('tr');
+            
+            const statusLabels = {
+                stray: 'Kucing Liar',
+                adopted: 'Diadopsi',
+                sterilized: 'Sudah Steril',
+                'non-sterilized': 'Belum Steril',
+                kitten: 'Anak Kucing',
+                adult: 'Dewasa',
+                old: 'Tua',
+                healthy: 'Sehat',
+                skinny: 'Kurus',
+                medical: 'Perlu Perawatan Medis',
+                critical: 'Kritis'
+            };
+            
+            const currentDate = new Date().toISOString().split('T')[0];
+            
+            row.innerHTML = `
+                <td>${String(catIdCounter).padStart(3, '0')}</td>
+                <td><span class="status-badge status-${catStatus}">${statusLabels[catStatus]}</span></td>
+                <td><span class="status-badge status-${sterilizedStatus}">${statusLabels[sterilizedStatus]}</span></td>
+                <td><span class="status-badge status-${catAge}">${statusLabels[catAge]}</span></td>
+                <td><span class="status-badge status-${catHealth}">${statusLabels[catHealth]}</span></td>
+                <td>${currentDate}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="edit-btn" onclick="editCat(${catIdCounter})">✏️ Edit</button>
+                        <button class="delete-btn" onclick="deleteCat(${catIdCounter})">🗑️ Hapus</button>
+                    </div>
+                </td>
+            `;
+            
+            tableBody.insertBefore(row, tableBody.firstChild);
+            catIdCounter++;
+        }
+
+        function editCat(id) {
+            alert(`Edit kucing dengan ID: ${id}\n(Fitur ini belum diimplementasi)`);
+        }
+
+        function deleteCat(id) {
+            if (confirm(`Apakah Anda yakin ingin menghapus data kucing dengan ID: ${id}?`)) {
+                // Find and remove the row
+                const rows = document.querySelectorAll('#catTableBody tr');
+                rows.forEach(row => {
+                    const idCell = row.cells[0].textContent;
+                    if (idCell === String(id).padStart(3, '0')) {
+                        row.remove();
+                    }
+                });
+                
+                // Show confirmation
+                alert(`Data kucing dengan ID: ${id} telah dihapus`);
+            }
+        }
+    </script>
+</body>
+</html>

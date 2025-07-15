@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet-Sense - Laporan</title>
+    <link rel="stylesheet" href="css/laporan.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Pet-Sense</div>
+        <nav class="nav">
+            <a href="index.html">Dashboard</a>
+            <a href="" class="active">Laporan</a>
+        </nav>
+        <div class="header-actions">
+            <a href="laporkan.html">
+                <button class="report-btn">Laporkan</button>
+            </a>
+            <div class="user-avatar">👤</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">Laporan Kucing Liar</h1>
+        <p class="page-subtitle">Laporan terbaru dari komunitas tentang kucing liar di sekitar</p>
+
+        <div class="controls">
+            <div class="filter-tabs">
+                <div class="filter-tab active">
+                    <span>📋</span>
+                    <span>Semua</span>
+                </div>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Cari laporan...">
+                <select class="time-filter">
+                    <option>Hari ini</option>
+                    <option>7 hari terakhir</option>
+                    <option>30 hari terakhir</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="reports-container">
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="profile-pic">AS</div>
+                    <div class="user-info">
+                        <div class="username">Ani Susanti</div>
+                        <div class="timestamp">13 Juli 2025 • 14:30</div>
+                    </div>
+                </div>
+                <div class="report-image img1"></div>
+                <div class="report-content">
+                    <p class="report-text">Menemukan anak kucing liar di pinggir jalan. Sepertinya sehat</p>
+                </div>
+                <div class="report-footer">
+                    <button class="location-btn">
+                        <span>📍</span>
+                        <span>Mal Kelapa Gading</span>
+                    </button>
+                    <div class="cat-count">1 kucing</div>
+                </div>
+            </div>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="profile-pic pic2">RH</div>
+                    <div class="user-info">
+                        <div class="username">Rizky Hermawan</div>
+                        <div class="timestamp">10 Juli 2025 • 11:45</div>
+                    </div>
+                </div>
+                <div class="report-image img2"></div>
+                <div class="report-content">
+                    <p class="report-text">Ada 3 kucing liar di sini. Sepertinya tidak terurus.</p>
+                </div>
+                <div class="report-footer">
+                    <button class="location-btn">
+                        <span>📍</span>
+                        <span>Jl. Sudirman No.45</span>
+                    </button>
+                    <div class="cat-count">3 kucing</div>
+                </div>
+            </div>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="profile-pic pic3">MF</div>
+                    <div class="user-info">
+                        <div class="username">Maya Fitri</div>
+                        <div class="timestamp">5 Juli 2025 • 08:20</div>
+                    </div>
+                </div>
+                <div class="report-image img3"></div>
+                <div class="report-content">
+                    <p class="report-text">Koloni kucing di taman kota semakin banyak. Mereka terlihat sehat dan sudah terbiasa dengan kehadiran manusia. Perlu program sterilisasi segera.</p>
+                </div>
+                <div class="report-footer">
+                    <button class="location-btn">
+                        <span>📍</span>
+                        <span>Taman Kota Menteng</span>
+                    </button>
+                    <div class="cat-count">5 kucing</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="load-more-btn">Muat Lebih Banyak</button>
+    </main>
+</body>
+</html>
